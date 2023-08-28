@@ -1,53 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { uploadFile } from "../Services/FileService/FileService";
+import React, { useState } from "react";
+import ApplyResume from "../Components/HomePage/ApplyResume";
+import ShowResume from "../Components/HomePage/ShowResume";
 
-const HomePage = () => {
-  const [file, setFile] = useState({});
-
-  const onFileChange = (e) => {
-    try {
-      // setIsLoadingPhoto(true);
-      const file = e.target.files[0];
-      if (file.name !== undefined) {
-        const formData = new FormData();
-        formData.append("file", file);
-        const fetchData = async () => {
-          try {
-            await uploadFile(formData).then((res) => {
-              setFile(res.data);
-              console.log(res.data);
-            });
-          } catch (err) {
-            //   window.location.reload();
-          }
-        };
-        fetchData().catch(console.error);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  
+const ViewPdf2 = () => {
+  const [pdfDetails, setPdfDetails] = useState({});
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <>
-      <input
-        className="modalMediaPostInput"
-        type="file"
-        accept=".pdf"
-        onChange={(e) => {
-          onFileChange(e);
-          e.target.value = null;
-        }}
-
-        // ref={inputRef}
-      />
-
-      <button to={file} target="_blank" download>
-        Download
-      </button>
+      {!showDetails ? (
+        <ApplyResume
+          setPdfDetails={setPdfDetails}
+          setShowDetails={setShowDetails}
+        />
+      ) : (
+        <ShowResume
+          pdfDetails={pdfDetails}
+          setPdfDetails={setPdfDetails}
+          setShowDetails={setShowDetails}
+        />
+      )}
     </>
   );
 };
 
-export default HomePage;
+export default ViewPdf2;

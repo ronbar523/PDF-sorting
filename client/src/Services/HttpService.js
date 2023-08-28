@@ -1,8 +1,10 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError = error.response && error.response.status >= 400;
   if (expectedError) {
+    toast.error(`An error occurred: ${error.message}`);
     return Promise.reject(error);
   }
 });

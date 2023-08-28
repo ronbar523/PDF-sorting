@@ -1,16 +1,23 @@
 import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-import "./App.css";
+import "./Css/ApplyResume.css";
+import "./Css/ContainerResume.css";
+
 import HomePage from "./Pages/HomePage";
 
 function App() {
   return (
     <>
       <Suspense fallback={<div> loading </div>}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
+        <header></header>
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </main>
+        <ToastContainer />
       </Suspense>
     </>
   );

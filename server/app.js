@@ -1,28 +1,38 @@
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+require("dotenv").config();
 const app = express();
 
-global.__basedir = __dirname;
 
 app.listen(process.env.PORT || 8000);
 
-app.use(cors());
+app.use(cors({ exposedHeaders: ["Content-Disposition"] }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/public", express.static("public"));
 app.set("view engine", "ejs");
 
-app.use("/public", express.static("public"));
+//MongoDB connect
+mongoose.connect(
+  process.env.database,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (err) => {
+    if (err) {
+      console.log("error connecting to mongodb", err);
+    } else {
+      console.log("connected to mongodb");
+    }
+  }
+);
 
-const ClientRouter = require("./collection/client/routes/clientRoutes");
+//Routes
+const ClientRouter = require("./collection-client/routes/routes");
 
 app.use("/client", ClientRouter);
 
